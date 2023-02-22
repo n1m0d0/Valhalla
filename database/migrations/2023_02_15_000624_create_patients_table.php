@@ -18,15 +18,15 @@ return new class extends Migration
             $table->string('lastname');
             $table->string('identity_card');
             $table->enum('issued', [
-                Patient::CH,
-                Patient::LP,
-                Patient::CB,
-                Patient::OR,
-                Patient::PT,
-                Patient::TJ,
-                Patient::SC,
-                Patient::BE,
-                Patient::PD
+                'CH',
+                'LP',
+                'CB',
+                'OR',
+                'PT',
+                'TJ',
+                'SC',
+                'BE',
+                'PD'
             ]);
             $table->date('birthdate');
             $table->enum('sex', [
