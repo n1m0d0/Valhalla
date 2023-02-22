@@ -31,4 +31,9 @@ class PageController extends Controller
     {
         return view('pages.meeting', compact('patient'));
     }
+
+    public function calendar()
+    {
+        return view('pages.calendar');
+    }
 }

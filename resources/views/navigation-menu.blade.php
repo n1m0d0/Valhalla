@@ -15,8 +15,13 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
                     <x-nav-link href="{{ route('page.patient') }}" :active="request()->routeIs('page.patient')">
                         {{ __('Patient') }}
+                    </x-nav-link>
+
+                    <x-nav-link href="{{ route('page.calendar') }}" :active="request()->routeIs('page.calendar')">
+                        {{ __('Calendar') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -143,8 +148,13 @@
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
             <x-responsive-nav-link href="{{ route('page.patient') }}" :active="request()->routeIs('page.patient')">
                 {{ __('Patient') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link href="{{ route('page.calendar') }}" :active="request()->routeIs('page.calendar')">
+                {{ __('Calendar') }}
             </x-responsive-nav-link>
         </div>
 

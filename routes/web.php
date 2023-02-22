@@ -34,4 +34,5 @@ Route::controller(PageController::class)->group(function () {
     Route::get('phone/{patient}', 'phone')->name('page.phone')->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']);
     Route::get('address/{patient}', 'address')->name('page.address')->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']);
     Route::get('meeting/{patient}', 'meeting')->name('page.meeting')->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']);
+    Route::get('calendar', 'calendar')->name('page.calendar')->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']);
 });
