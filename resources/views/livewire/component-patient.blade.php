@@ -246,7 +246,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-left">
                                 <ul>
                                     <li>
-                                        <a href="{{ route('page.meeting', $patient) }}"
+                                        <a href="{{ route('page.file', $patient) }}"
                                             class="font-medium text-orange-600 dark:text-orange-500 hover:underline cursor-pointer">
                                             {{ __('File') }}
                                         </a>

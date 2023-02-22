@@ -1,4 +1,4 @@
-<div class="p-2 grid grid-cols-1 md:grid-cols-12">
+<div class="p-2 grid grid-cols-1 md:grid-cols-12 gap-2">
     <div class="col-span-1 md:col-span-3 flex items-center justify-center border-gray-600 border-2 rounded-xl p-2">
         <img src="{{ Storage::url($patient->photo_path) }}" class="rounded-2xl h-36 w-36 object-cover">
     </div>
