@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('meetings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('patient_id');
             $table->string('title');
             $table->dateTime('start');
-            $table->dateTime('end');
+            $table->dateTime('end')->nullable();
             $table->boolean('attended')->nullable();
             $table->timestamps();
             $table->softDeletes();

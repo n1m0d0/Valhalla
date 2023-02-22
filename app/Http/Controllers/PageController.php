@@ -26,4 +26,9 @@ class PageController extends Controller
     {
         return view('pages.address', compact('patient'));
     }
+
+    public function meeting(Patient $patient)
+    {
+        return view('pages.meeting', compact('patient'));
+    }
 }

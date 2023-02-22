@@ -20,14 +20,34 @@
                 </h1>
             </div>
 
-            <div class="col-span-1 md:col-span-6">
+            <div class="col-span-1 md:col-span-12">
                 <x-label>
-                    {{ __('Ubication') }}
+                    {{ __('Title') }}
                 </x-label>
 
-                <x-input type="text" wire:model='ubication' />
+                <x-input type="text" wire:model='title' />
 
-                <x-input-error for="ubication" />
+                <x-input-error for="title" />
+            </div>
+
+            <div class="col-span-1 md:col-span-6">
+                <x-label>
+                    {{ __('Start') }}
+                </x-label>
+
+                <x-input type="datetime-local" wire:model='start' />
+
+                <x-input-error for="start" />
+            </div>
+
+            <div class="col-span-1 md:col-span-6">
+                <x-label>
+                    {{ __('End') }}
+                </x-label>
+
+                <x-input type="datetime-local" wire:model='end' />
+
+                <x-input-error for="end" />
             </div>
         @endslot
 
@@ -82,7 +102,15 @@
                 @slot('head')
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            {{ __('Ubication') }}
+                            {{ __('Title') }}
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            {{ __('Start') }}
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            {{ __('End') }}
                         </th>
 
                         <th scope="col" class="px-6 py-3">
@@ -92,24 +120,32 @@
                 @endslot
 
                 @slot('body')
-                    @foreach ($addresses as $address)
+                    @foreach ($meetings as $meeting)
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $address->ubication }}
+                                {{ $meeting->title }}
+                            </td>
+
+                            <td class="px-6 py-4">
+                                {{ $meeting->start }}
+                            </td>
+
+                            <td class="px-6 py-4">
+                                {{ $meeting->end }}
                             </td>
 
                             <td class="px-6 py-4 whitespace-nowrap text-left">
                                 <ul>
                                     <li>
-                                        <a wire:click='edit({{ $address->id }})'
+                                        <a wire:click='edit({{ $meeting->id }})'
                                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
                                             {{ __('Edit') }}
                                         </a>
                                     </li>
 
                                     <li>
-                                        <a wire:click='modalDelete({{ $address->id }})'
+                                        <a wire:click='modalDelete({{ $meeting->id }})'
                                             class="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer">
                                             {{ __('Delete') }}
                                         </a>
@@ -123,7 +159,7 @@
         @endslot
 
         @slot('paginate')
-            {{ $addresses->links('vendor.livewire.custom') }}
+            {{ $meetings->links('vendor.livewire.custom') }}
         @endslot
     </x-list>
 

@@ -19,7 +19,6 @@ class ComponentPatient extends Component
     public $iteration;
     public $search;
 
-    //patient
     public $name;
     public $lastname;
     public $identity_card;

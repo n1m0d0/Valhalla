@@ -2,14 +2,14 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Address;
+use App\Models\Meeting;
 use App\Models\Patient;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Usernotnull\Toast\Concerns\WireToast;
 
-class ComponentAddress extends Component
+class ComponentMeeting extends Component
 {
     use WithPagination;
     use WithFileUploads;
@@ -21,8 +21,11 @@ class ComponentAddress extends Component
 
     public $patient;
 
-    public $ubication;
-    public $address_id;
+    public $title;
+    public $start;
+    public $end;
+
+    public $meeting_id;
 
     public $deleteModal;
 
@@ -32,7 +35,9 @@ class ComponentAddress extends Component
     ];
 
     protected $rules = [
-        'ubication' => 'required|max:200',
+        'title' => 'required|max:200',
+        'start' => 'required|date',
+        'end' => 'nullable|max:200',
     ];
 
     public function mount(Patient $patient)
@@ -43,27 +48,28 @@ class ComponentAddress extends Component
         $this->search = "";
         $this->deleteModal = false;
     }
-    
+
     public function render()
     {
-        $queryAddress = Address::query();
+        $queryMeeting = Meeting::query();
         if ($this->search != null) {
             $this->updatingSearch();
-            $queryAddress = $queryAddress->where('ubication', 'like', '%' . $this->search . '%');
+            $queryMeeting = $queryMeeting->where('title', 'like', '%' . $this->search . '%');
         }
-        $addresses = $queryAddress->where('addressable_id', $this->patient->id)->orderBy('id', 'DESC')->paginate(2);
-        return view('livewire.component-address', compact('addresses'));
+        $meetings = $queryMeeting->where('patient_id', $this->patient->id)->whereNull('attended')->orderBy('id', 'DESC')->paginate(2);
+        return view('livewire.component-meeting', compact('meetings'));
     }
 
     public function store()
     {
         $this->validate();
 
-        $address = new Address();
-        $address->ubication = $this->ubication;
-        $address->addressable_id = $this->patient->id;
-        $address->addressable_type = Patient::class;
-        $address->save();
+        $meeting = new meeting();
+        $meeting->patient_id = $this->patient->id;
+        $meeting->title = $this->title;
+        $meeting->start = $this->start;
+        $meeting->end = $this->end;
+        $meeting->save();
 
         $this->clear();
 
@@ -76,24 +82,28 @@ class ComponentAddress extends Component
     {
         $this->clear();
 
-        $this->address_id = $id;
+        $this->meeting_id = $id;
 
-        $address = Address::find($id);
+        $meeting = Meeting::find($id);
 
-        $this->ubication = $address->ubication;
+        $this->title = $meeting->title;
+        $this->start = $meeting->start;
+        $this->end = $meeting->end;
 
         $this->activity = "edit";
     }
 
     public function update()
     {
-        $address = Address::find($this->address_id);
+        $meeting = Meeting::find($this->meeting_id);
 
         $this->validate();
 
-        $address->ubication = $this->ubication;
-        $address->save();
-        
+        $meeting->title = $this->title;
+        $meeting->start = $this->start;
+        $meeting->end = $this->end;
+        $meeting->save();
+
         $this->activity = "create";
         $this->clear();
 
@@ -104,14 +114,14 @@ class ComponentAddress extends Component
 
     public function modalDelete($id)
     {
-        $this->address_id = $id;
+        $this->meeting_id = $id;
         $this->deleteModal = true;
     }
 
     public function delete()
     {
-        $address = Address::find($this->address_id);
-        $address->delete();
+        $meeting = Meeting::find($this->meeting_id);
+        $meeting->delete();
 
         $this->clear();
         $this->deleteModal = false;
@@ -120,10 +130,10 @@ class ComponentAddress extends Component
             ->success('Se elimino correctamente')
             ->push();
     }
-    
+
     public function clear()
     {
-        $this->reset(['ubication', 'address_id']);
+        $this->reset(['title', 'start', 'end', 'meeting_id']);
         $this->iteration++;
         $this->activity = "create";
     }
