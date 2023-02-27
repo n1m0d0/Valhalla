@@ -20,7 +20,7 @@ class ComponentPatient extends Component
     public $search;
 
     public $name;
-    public $lastname;
+    public $last_name;
     public $identity_card;
     public $issued;
     public $birthdate;
@@ -39,7 +39,7 @@ class ComponentPatient extends Component
 
     protected $rules = [
         'name' => 'required|max:200',
-        'lastname' => 'required|max:200',
+        'last_name' => 'required|max:200',
         'identity_card' => 'required|max:200',
         'issued' => 'required',
         'birthdate' => 'required',
@@ -60,7 +60,7 @@ class ComponentPatient extends Component
         $queryPatient = Patient::query();
         if ($this->search != null) {
             $this->updatingSearch();
-            $queryPatient = $queryPatient->where('name', 'like', '%' . $this->search . '%')->orWhere('lastname', 'like', '%' . $this->search . '%');
+            $queryPatient = $queryPatient->where('name', 'like', '%' . $this->search . '%')->orWhere('last_name', 'like', '%' . $this->search . '%');
         }
         $patients = $queryPatient->orderBy('id', 'DESC')->paginate(2);
         return view('livewire.component-patient', compact('patients'));
@@ -72,7 +72,7 @@ class ComponentPatient extends Component
 
         $patient = new Patient();
         $patient->name = $this->name;
-        $patient->lastname = $this->lastname;
+        $patient->last_name = $this->last_name;
         $patient->identity_card = $this->identity_card;
         $patient->issued = $this->issued;
         $patient->birthdate = $this->birthdate;
@@ -96,7 +96,7 @@ class ComponentPatient extends Component
         $patient = Patient::find($id);
 
         $this->name = $patient->name;
-        $this->lastname = $patient->lastname;
+        $this->last_name = $patient->last_name;
         $this->identity_card = $patient->identity_card;
         $this->issued = $patient->issued;
         $this->birthdate = $patient->birthdate;
@@ -116,7 +116,7 @@ class ComponentPatient extends Component
             Storage::delete($patient->photo_path);
 
             $patient->name = $this->name;
-            $patient->lastname = $this->lastname;
+            $patient->last_name = $this->last_name;
             $patient->identity_card = $this->identity_card;
             $patient->issued = $this->issued;
             $patient->birthdate = $this->birthdate;
@@ -126,7 +126,7 @@ class ComponentPatient extends Component
         } else {
             $this->validate([
                 'name' => 'required|max:200',
-                'lastname' => 'required|max:200',
+                'last_name' => 'required|max:200',
                 'identity_card' => 'required|max:200',
                 'issued' => 'required',
                 'birthdate' => 'required',
@@ -134,7 +134,7 @@ class ComponentPatient extends Component
             ]);
 
             $patient->name = $this->name;
-            $patient->lastname = $this->lastname;
+            $patient->last_name = $this->last_name;
             $patient->identity_card = $this->identity_card;
             $patient->issued = $this->issued;
             $patient->birthdate = $this->birthdate;
@@ -171,7 +171,7 @@ class ComponentPatient extends Component
     
     public function clear()
     {
-        $this->reset(['name', 'lastname', 'identity_card', 'issued', 'birthdate', 'sex', 'photo_path', 'patient_id']);
+        $this->reset(['name', 'last_name', 'identity_card', 'issued', 'birthdate', 'sex', 'photo_path', 'patient_id']);
         $this->iteration++;
         $this->activity = "create";
     }

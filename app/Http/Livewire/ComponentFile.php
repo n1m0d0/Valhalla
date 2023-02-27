@@ -17,7 +17,7 @@ class ComponentFile extends Component
     {
         $this->activity = "main";
         $this->patient = $patient;
-        $this->age = Carbon::createFromDate(1994, 5, 23)->age;
+        $this->age = Carbon::createFromDate($patient->birthdate)->age;
     }
 
     public function render()

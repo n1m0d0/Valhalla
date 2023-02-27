@@ -48,12 +48,12 @@
 
             <div class="col-span-1 md:col-span-6">
                 <x-label>
-                    {{ __('Lastname') }}
+                    {{ __('Last name') }}
                 </x-label>
 
-                <x-input type="text" wire:model='lastname' />
+                <x-input type="text" wire:model='last_name' />
 
-                <x-input-error for="lastname" />
+                <x-input-error for="last_name" />
             </div>
 
             <div class="col-span-1 md:col-span-6">
@@ -222,7 +222,7 @@
                             </td>
 
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $patient->name }} {{ $patient->lastname }}
+                                {{ $patient->name }} {{ $patient->last_name }}
                             </th>
 
                             <td class="px-6 py-4">

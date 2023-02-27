@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('lastname');
+            $table->string('last_name');
             $table->string('identity_card');
             $table->enum('issued', [
                 'CH',

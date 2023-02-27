@@ -5,7 +5,7 @@
 
     <div class="col-span-1 md:col-span-9 border-gray-600 border-2 rounded-xl p-2">
         <h1 class="text-gray-800 dark:text-white text-2xl text-left">
-            {{ $patient->name }} {{ $patient->lastname }}
+            {{ $patient->name }} {{ $patient->last_name }}
         </h1>
 
         <h1 class="text-gray-800 dark:text-white text-xl text-left">
@@ -25,7 +25,7 @@
         </h1>
 
         <h1 class="text-gray-800 dark:text-white text-xl text-left">
-            {{ __('Identity card') }}:
+            {{ __('Identity Card') }}:
 
             <span class="text-lg text-gray-700 dark:text-gray-400">
                 {{ $patient->identity_card }} {{ $patient->issued }}

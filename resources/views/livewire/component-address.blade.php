@@ -10,7 +10,7 @@
         @slot('form')
             <div class="col-span-1 md:col-span-6">
                 <h1 class="text-gray-800 dark:text-white text-2xl text-left">
-                    {{ $patient->name }} {{ $patient->lastname }}
+                    {{ $patient->name }} {{ $patient->last_name }}
                 </h1>
             </div>
 
@@ -20,7 +20,7 @@
                 </h1>
             </div>
 
-            <div class="col-span-1 md:col-span-6">
+            <div class="col-span-1 md:col-span-12">
                 <x-label>
                     {{ __('Ubication') }}
                 </x-label>
