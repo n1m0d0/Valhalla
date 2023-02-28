@@ -209,5 +209,11 @@
     "Age": "Edad",
     "Patient": "Paciente",
     "Select an option": "Seleccione una opción",
-    "Sign in to your account": "Acceda a su cuenta"
+    "Sign in to your account": "Acceda a su cuenta",
+    "Program": "Programa",
+    "Male": "Masculino",
+    "Female": "Femenino",
+    "Attended": "Asistió",
+    "Yes": "Si",
+    "No": "No"
 }

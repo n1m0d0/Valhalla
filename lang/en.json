@@ -209,5 +209,11 @@
     "Age": "Age",
     "Patient": "Patient",
     "Select an option": "Select an option",
-    "Sign in to your account": "Sign in to your account"
+    "Sign in to your account": "Sign in to your account",
+    "Program": "Program",
+    "Male": "Male",
+    "Female": "Female",
+    "Attended": "Attended",
+    "Yes": "Yes",
+    "No": "No"
 }

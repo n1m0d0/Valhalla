@@ -21,10 +21,6 @@ class ComponentCalendar extends Component
     public function render()
     {
         $queryMeeting = Meeting::query();
-        if ($this->patient_id != null) {
-            $this->updatingSearch();
-            $queryMeeting = $queryMeeting->where('patient_id', 'like', '%' . $this->patient_id . '%');
-        }
         $meetings = $queryMeeting->whereNull('attended')->get(); 
         $this->events = json_encode($meetings);
         return view('livewire.component-calendar', compact('meetings'));

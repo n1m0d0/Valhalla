@@ -36,4 +36,9 @@ class PageController extends Controller
     {
         return view('pages.calendar');
     }
+
+    public function program()
+    {
+        return view('pages.program');
+    }
 }
