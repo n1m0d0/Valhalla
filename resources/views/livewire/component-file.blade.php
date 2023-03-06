@@ -76,12 +76,32 @@
             @foreach ($patient->phones as $phone)
                 <li>
                     <p class="text-gray-800 dark:text-white text-xl text-left">
-                        {{ __('Phone') }}:
+                        {{ __('Number') }}:
 
                         <span class="text-lg text-gray-700 dark:text-gray-400">
                             {{ $phone->number }}
                         </span>
                     </p>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+
+    <div class="col-span-1 md:col-span-12 border-gray-600 border-2 rounded-xl p-2">
+        <h1 class="text-gray-800 dark:text-white text-xl text-left">
+            {{ __('History') }}
+        </h1>
+
+        <ul class="space-y-4 text-gray-800 list-disc list-inside dark:text-white m-2">
+            @foreach ($patient->record->details as $detail)
+                <li>
+                    {{ $detail->question->description }}
+
+                    <ol class="pl-5 mt-2 text-gray-600 dark:text-gray-400 space-y-1 list-inside">
+                        <li>
+                            {{ $detail->description }}
+                        </li>
+                    </ol>
                 </li>
             @endforeach
         </ul>

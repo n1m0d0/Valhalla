@@ -2,13 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Meeting;
-use App\Models\Patient;
+use App\Models\Question;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Usernotnull\Toast\Concerns\WireToast;
 
-class ComponentMeeting extends Component
+class ComponentQuestion extends Component
 {
     use WithPagination;
     use WireToast;
@@ -16,13 +15,9 @@ class ComponentMeeting extends Component
     public $activity;
     public $search;
 
-    public $patient;
+    public $description;
 
-    public $title;
-    public $start;
-    public $end;
-
-    public $meeting_id;
+    public $question_id;
 
     public $deleteModal;
 
@@ -32,14 +27,11 @@ class ComponentMeeting extends Component
     ];
 
     protected $rules = [
-        'title' => 'required|max:200',
-        'start' => 'required|date',
-        'end' => 'nullable|max:200',
+        'description' => 'required|max:1000'
     ];
 
-    public function mount(Patient $patient)
+    public function mount()
     {
-        $this->patient = $patient;
         $this->activity = 'create';
         $this->search = "";
         $this->deleteModal = false;
@@ -47,25 +39,22 @@ class ComponentMeeting extends Component
 
     public function render()
     {
-        $queryMeeting = Meeting::query();
+        $queryQuestion = Question::query();
         if ($this->search != null) {
             $this->updatingSearch();
-            $queryMeeting = $queryMeeting->where('title', 'like', '%' . $this->search . '%');
+            $queryQuestion = $queryQuestion->where('description', 'like', '%' . $this->search . '%');
         }
-        $meetings = $queryMeeting->where('patient_id', $this->patient->id)->whereNull('attended')->orderBy('id', 'DESC')->paginate(2);
-        return view('livewire.component-meeting', compact('meetings'));
+        $questions = $queryQuestion->orderBy('id', 'DESC')->paginate(5);
+        return view('livewire.component-question', compact('questions'));
     }
 
     public function store()
     {
         $this->validate();
 
-        $meeting = new meeting();
-        $meeting->patient_id = $this->patient->id;
-        $meeting->title = $this->title;
-        $meeting->start = $this->start;
-        $meeting->end = $this->end;
-        $meeting->save();
+        $question = new Question();
+        $question->description = $this->description;
+        $question->save();
 
         $this->clear();
 
@@ -78,27 +67,23 @@ class ComponentMeeting extends Component
     {
         $this->clear();
 
-        $this->meeting_id = $id;
+        $this->question_id = $id;
 
-        $meeting = Meeting::find($id);
+        $question = Question::find($id);
 
-        $this->title = $meeting->title;
-        $this->start = $meeting->start;
-        $this->end = $meeting->end;
+        $this->description = $question->description;
 
         $this->activity = "edit";
     }
 
     public function update()
     {
-        $meeting = Meeting::find($this->meeting_id);
+        $question = Question::find($this->question_id);
 
         $this->validate();
 
-        $meeting->title = $this->title;
-        $meeting->start = $this->start;
-        $meeting->end = $this->end;
-        $meeting->save();
+        $question->description = $this->description;
+        $question->save();
 
         $this->activity = "create";
         $this->clear();
@@ -110,14 +95,14 @@ class ComponentMeeting extends Component
 
     public function modalDelete($id)
     {
-        $this->meeting_id = $id;
+        $this->question_id = $id;
         $this->deleteModal = true;
     }
 
     public function delete()
     {
-        $meeting = Meeting::find($this->meeting_id);
-        $meeting->delete();
+        $question = Question::find($this->question_id);
+        $question->delete();
 
         $this->clear();
         $this->deleteModal = false;
@@ -129,7 +114,7 @@ class ComponentMeeting extends Component
 
     public function clear()
     {
-        $this->reset(['title', 'start', 'end', 'meeting_id']);
+        $this->reset(['description', 'question_id']);
         $this->activity = "create";
     }
 

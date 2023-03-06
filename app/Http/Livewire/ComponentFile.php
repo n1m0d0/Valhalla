@@ -8,14 +8,11 @@ use Livewire\Component;
 
 class ComponentFile extends Component
 {
-    public $activity;
-
     public $patient;
     public $age;
 
     public function mount(Patient $patient)
     {
-        $this->activity = "main";
         $this->patient = $patient;
         $this->age = Carbon::createFromDate($patient->birthdate)->age;
     }

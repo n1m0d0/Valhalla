@@ -5,18 +5,15 @@ namespace App\Http\Livewire;
 use App\Models\Patient;
 use App\Models\Phone;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Usernotnull\Toast\Concerns\WireToast;
 
 class ComponentPhone extends Component
 {
     use WithPagination;
-    use WithFileUploads;
     use WireToast;
 
     public $activity;
-    public $iteration;
     public $search;
 
     public $patient;
@@ -39,7 +36,6 @@ class ComponentPhone extends Component
     {
         $this->patient = $patient;
         $this->activity = 'create';
-        $this->iteration = rand(0, 999);
         $this->search = "";
         $this->deleteModal = false;
     }
@@ -124,7 +120,6 @@ class ComponentPhone extends Component
     public function clear()
     {
         $this->reset(['number', 'phone_id']);
-        $this->iteration++;
         $this->activity = "create";
     }
 

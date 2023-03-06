@@ -17,6 +17,7 @@ class ComponentProgram extends Component
     public $search;
 
     public $attended;
+    
     public $meeting_id; 
 
     public $day;

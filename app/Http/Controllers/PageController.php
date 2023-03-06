@@ -41,4 +41,14 @@ class PageController extends Controller
     {
         return view('pages.program');
     }
+
+    public function question()
+    {
+        return view('pages.question');
+    }
+
+    public function detail(Patient $patient)
+    {
+        return view('pages.detail', compact('patient'));
+    }
 }

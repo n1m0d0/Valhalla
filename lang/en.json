@@ -215,5 +215,9 @@
     "Female": "Female",
     "Attended": "Attended",
     "Yes": "Yes",
-    "No": "No"
+    "No": "No",
+    "Question": "Question",
+    "Description": "Description",
+    "History": "History",
+    "Medical": "Medical"
 }

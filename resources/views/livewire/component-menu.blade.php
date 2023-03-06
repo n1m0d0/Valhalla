@@ -18,6 +18,12 @@
                     {{ __('Meeting') }}
                 </x-item-menu>
             @endrole
+
+            @role('admin|doctor')
+                <x-item-menu href="{{ route('page.detail', $patient) }}">
+                    {{ __('History') }}
+                </x-item-menu>
+            @endrole
         </li>
     </ul>
 </div>

@@ -17,6 +17,10 @@
                     </x-nav-link>
 
                     @role('admin|doctor|secretary')
+                        <x-nav-link href="{{ route('page.question') }}" :active="request()->routeIs('page.question')">
+                            {{ __('Question') }}
+                        </x-nav-link>
+
                         <x-nav-link href="{{ route('page.patient') }}" :active="request()->routeIs('page.patient')">
                             {{ __('Patient') }}
                         </x-nav-link>
@@ -167,6 +171,10 @@
             </x-responsive-nav-link>
 
             @role('admin|doctor|secretary')
+                <x-responsive-nav-link href="{{ route('page.question') }}" :active="request()->routeIs('page.question')">
+                    {{ __('Question') }}
+                </x-responsive-nav-link>
+
                 <x-responsive-nav-link href="{{ route('page.patient') }}" :active="request()->routeIs('page.patient')">
                     {{ __('Patient') }}
                 </x-responsive-nav-link>

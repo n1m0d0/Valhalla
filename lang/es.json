@@ -215,5 +215,9 @@
     "Female": "Femenino",
     "Attended": "Asistió",
     "Yes": "Si",
-    "No": "No"
+    "No": "No",
+    "Question": "Pregunta",
+    "Description": "Descripción",
+    "History": "Historia",
+    "Medical": "Médica"
 }
