@@ -1,37 +1,56 @@
 <div class="p-2">
     <x-form-patient>
         @slot('photo')
-            <div class="text-center">
-                @if ($patient->photo_path != null)
-                    <img src="{{ Storage::url($patient->photo_path) }}" class="rounded-full h-36 w-36 object-cover"
-                        data-action="zoom">
-                @else
-                    <x-feathericon-user class="h-36 w-36 text-gray-700 dark:text-white" />
-                @endif
-            </div>
+            <x-feathericon-pen-tool class="h-24 w-24 text-gray-700 dark:text-white" />
         @endslot
 
         @slot('form')
             <div class="col-span-1 md:col-span-6">
-                <h1 class="text-gray-800 dark:text-white text-2xl text-left">
-                    {{ $patient->name }} {{ $patient->last_name }}
-                </h1>
+                <x-label>
+                    {{ __('Name') }}
+                </x-label>
+
+                <x-input type="text" wire:model='name' />
+
+                <x-input-error for="name" />
             </div>
 
             <div class="col-span-1 md:col-span-6">
-                <h1 class="text-gray-800 dark:text-white text-2xl text-left">
-                    {{ $patient->identity_card }} {{ $patient->issued }}
-                </h1>
-            </div>
-
-            <div class="col-span-1 md:col-span-12">
                 <x-label>
-                    {{ __('Number') }}
+                    {{ __('Email') }}
                 </x-label>
 
-                <x-input type="text" wire:model='number' />
+                <x-input type="text" wire:model='email' />
 
-                <x-input-error for="number" />
+                <x-input-error for="email" />
+            </div>
+
+            <div class="col-span-1 md:col-span-6">
+                <x-label>
+                    {{ __('Password') }}
+                </x-label>
+
+                <x-input type="text" wire:model='password' />
+
+                <x-input-error for="password" />
+            </div>
+
+            <div class="col-span-1 md:col-span-6">
+                <x-label>
+                    {{ __('Role') }}
+                </x-label>
+
+                <x-select wire:model='role'>
+                    @slot('content')
+                        <option value="null">{{ __('Select an option') }}</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Doctor">{{ __('Doctor') }}</option>
+                        <option value="Secretary">{{ __('Secretary') }}</option>
+                        <option value="Patient">{{ __('Patient') }}</option>
+                    @endslot
+                </x-select>
+
+                <x-input-error for="role" />
             </div>
         @endslot
 
@@ -86,7 +105,15 @@
                 @slot('head')
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            {{ __('Number') }}
+                            {{ __('Name') }}
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            {{ __('Email') }}
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            {{ __('Role') }}
                         </th>
 
                         <th scope="col" class="px-6 py-3">
@@ -96,24 +123,33 @@
                 @endslot
 
                 @slot('body')
-                    @foreach ($phones as $phone)
+                    @foreach ($users as $user)
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $phone->number }}
+
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $user->name }}
+                            </th>
+
+                            <td class="px-6 py-4">
+                                {{ $user->email }}
+                            </td>
+
+                            <td class="px-6 py-4">
+                                {{ __($user->getRoleNames()[0]) }}
                             </td>
 
                             <td class="px-6 py-4 whitespace-nowrap text-left">
                                 <ul>
                                     <li>
-                                        <a wire:click='edit({{ $phone->id }})'
+                                        <a wire:click='edit({{ $user->id }})'
                                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
                                             {{ __('Edit') }}
                                         </a>
                                     </li>
 
                                     <li>
-                                        <a wire:click='modalDelete({{ $phone->id }})'
+                                        <a wire:click='modalDelete({{ $user->id }})'
                                             class="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer">
                                             {{ __('Delete') }}
                                         </a>
@@ -127,7 +163,7 @@
         @endslot
 
         @slot('paginate')
-            {{ $phones->links('vendor.livewire.custom') }}
+            {{ $users->links('vendor.livewire.custom') }}
         @endslot
     </x-list>
 

@@ -51,4 +51,24 @@ class PageController extends Controller
     {
         return view('pages.detail', compact('patient'));
     }
+
+    public function consultation()
+    {
+        return view('pages.consultation');
+    }
+
+    public function treatment()
+    {
+        return view('pages.treatment');
+    }
+
+    public function user()
+    {
+        return view('pages.user');
+    }
+
+    public function diagnostic(Patient $patient)
+    {
+        return view('pages.diagnostic', compact('patient'));
+    }
 }

@@ -16,7 +16,17 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    @role('admin|doctor|secretary')
+                    @role('Admin|Doctor')
+                        <x-nav-link href="{{ route('page.user') }}" :active="request()->routeIs('page.user')">
+                            {{ __('User') }}
+                        </x-nav-link>
+                    @endrole
+
+                    @role('Admin|Doctor|Secretary')
+                        <x-nav-link href="{{ route('page.treatment') }}" :active="request()->routeIs('page.treatment')">
+                            {{ __('Treatment') }}
+                        </x-nav-link>
+
                         <x-nav-link href="{{ route('page.question') }}" :active="request()->routeIs('page.question')">
                             {{ __('Question') }}
                         </x-nav-link>
@@ -28,11 +38,17 @@
                         <x-nav-link href="{{ route('page.program') }}" :active="request()->routeIs('page.program')">
                             {{ __('Program') }}
                         </x-nav-link>
+                    @endrole
 
-                        <x-nav-link href="{{ route('page.calendar') }}" :active="request()->routeIs('page.calendar')">
-                            {{ __('Calendar') }}
+                    @role('Admin|Doctor')
+                        <x-nav-link href="{{ route('page.consultation') }}" :active="request()->routeIs('page.consultation')">
+                            {{ __('Consultation') }}
                         </x-nav-link>
                     @endrole
+
+                    <x-nav-link href="{{ route('page.calendar') }}" :active="request()->routeIs('page.calendar')">
+                        {{ __('Calendar') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -170,7 +186,17 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
-            @role('admin|doctor|secretary')
+            @role('Admin|Doctor')
+                <x-responsive-nav-link href="{{ route('page.user') }}" :active="request()->routeIs('page.user')">
+                    {{ __('User') }}
+                </x-responsive-nav-link>
+            @endrole
+
+            @role('Admin|Doctor|Secretary')
+                <x-responsive-nav-link href="{{ route('page.treatment') }}" :active="request()->routeIs('page.treatment')">
+                    {{ __('Treatment') }}
+                </x-responsive-nav-link>
+
                 <x-responsive-nav-link href="{{ route('page.question') }}" :active="request()->routeIs('page.question')">
                     {{ __('Question') }}
                 </x-responsive-nav-link>
@@ -182,11 +208,17 @@
                 <x-responsive-nav-link href="{{ route('page.program') }}" :active="request()->routeIs('page.program')">
                     {{ __('Program') }}
                 </x-responsive-nav-link>
+            @endrole
 
-                <x-responsive-nav-link href="{{ route('page.calendar') }}" :active="request()->routeIs('page.calendar')">
-                    {{ __('Calendar') }}
+            @role('Admin|Doctor')
+                <x-responsive-nav-link href="{{ route('page.consultation') }}" :active="request()->routeIs('page.consultation')">
+                    {{ __('Consultation') }}
                 </x-responsive-nav-link>
             @endrole
+
+            <x-responsive-nav-link href="{{ route('page.calendar') }}" :active="request()->routeIs('page.calendar')">
+                {{ __('Calendar') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

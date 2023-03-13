@@ -2,8 +2,12 @@
     <x-form-patient>
         @slot('photo')
             <div class="text-center">
-                <img src="{{ Storage::url($patient->photo_path) }}" class="rounded-2xl h-36 w-36 object-cover"
-                    data-action="zoom">
+                @if ($patient->photo_path != null)
+                    <img src="{{ Storage::url($patient->photo_path) }}" class="rounded-full h-36 w-36 object-cover"
+                        data-action="zoom">
+                @else
+                    <x-feathericon-user class="h-36 w-36 text-gray-700 dark:text-white" />
+                @endif
             </div>
         @endslot
 

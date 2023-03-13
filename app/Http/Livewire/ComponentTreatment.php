@@ -2,13 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Meeting;
-use App\Models\Patient;
+use App\Models\Treatment;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Usernotnull\Toast\Concerns\WireToast;
 
-class ComponentMeeting extends Component
+class ComponentTreatment extends Component
 {
     use WithPagination;
     use WireToast;
@@ -16,13 +15,11 @@ class ComponentMeeting extends Component
     public $activity;
     public $search;
 
-    public $patient;
+    public $name;
+    public $description;
+    public $price;
 
-    public $title;
-    public $start;
-    public $end;
-
-    public $meeting_id;
+    public $treatment_id;
 
     public $deleteModal;
 
@@ -32,14 +29,13 @@ class ComponentMeeting extends Component
     ];
 
     protected $rules = [
-        'title' => 'required|max:200',
-        'start' => 'required|date',
-        'end' => 'nullable|date',
+        'name' => 'required|max:200',
+        'description' => 'required|max:1000',
+        'price' => 'required|decimal:0,2'
     ];
 
-    public function mount(Patient $patient)
+    public function mount()
     {
-        $this->patient = $patient;
         $this->activity = 'create';
         $this->search = "";
         $this->deleteModal = false;
@@ -47,25 +43,24 @@ class ComponentMeeting extends Component
 
     public function render()
     {
-        $queryMeeting = Meeting::query();
+        $queryTreatment = Treatment::query();
         if ($this->search != null) {
             $this->updatingSearch();
-            $queryMeeting = $queryMeeting->where('title', 'like', '%' . $this->search . '%');
+            $queryTreatment = $queryTreatment->where('name', 'like', '%' . $this->search . '%');
         }
-        $meetings = $queryMeeting->where('patient_id', $this->patient->id)->whereNull('attended')->orderBy('id', 'DESC')->paginate(2);
-        return view('livewire.component-meeting', compact('meetings'));
+        $treatments = $queryTreatment->orderBy('id', 'DESC')->paginate(5);
+        return view('livewire.component-treatment', compact('treatments'));
     }
 
     public function store()
     {
         $this->validate();
 
-        $meeting = new meeting();
-        $meeting->patient_id = $this->patient->id;
-        $meeting->title = $this->title;
-        $meeting->start = $this->start;
-        $meeting->end = $this->end;
-        $meeting->save();
+        $treatment = new Treatment();
+        $treatment->name = $this->name;
+        $treatment->description = $this->description;
+        $treatment->price = $this->price;
+        $treatment->save();
 
         $this->clear();
 
@@ -78,27 +73,27 @@ class ComponentMeeting extends Component
     {
         $this->clear();
 
-        $this->meeting_id = $id;
+        $this->treatment_id = $id;
 
-        $meeting = Meeting::find($id);
+        $treatment = Treatment::find($id);
 
-        $this->title = $meeting->title;
-        $this->start = $meeting->start;
-        $this->end = $meeting->end;
+        $this->name = $treatment->name;
+        $this->description = $treatment->description;
+        $this->price = $treatment->price;
 
         $this->activity = "edit";
     }
 
     public function update()
     {
-        $meeting = Meeting::find($this->meeting_id);
+        $treatment = Treatment::find($this->treatment_id);
 
         $this->validate();
 
-        $meeting->title = $this->title;
-        $meeting->start = $this->start;
-        $meeting->end = $this->end;
-        $meeting->save();
+        $treatment->name = $this->name;
+        $treatment->description = $this->description;
+        $treatment->price = $this->price;
+        $treatment->save();
 
         $this->activity = "create";
         $this->clear();
@@ -110,14 +105,14 @@ class ComponentMeeting extends Component
 
     public function modalDelete($id)
     {
-        $this->meeting_id = $id;
+        $this->treatment_id = $id;
         $this->deleteModal = true;
     }
 
     public function delete()
     {
-        $meeting = Meeting::find($this->meeting_id);
-        $meeting->delete();
+        $treatment = Treatment::find($this->treatment_id);
+        $treatment->delete();
 
         $this->clear();
         $this->deleteModal = false;
@@ -129,7 +124,7 @@ class ComponentMeeting extends Component
 
     public function clear()
     {
-        $this->reset(['title', 'start', 'end', 'meeting_id']);
+        $this->reset(['name', 'description', 'price', 'treatment_id']);
         $this->activity = "create";
     }
 

@@ -1,37 +1,38 @@
 <div class="p-2">
     <x-form-patient>
         @slot('photo')
-            <div class="text-center">
-                @if ($patient->photo_path != null)
-                    <img src="{{ Storage::url($patient->photo_path) }}" class="rounded-full h-36 w-36 object-cover"
-                        data-action="zoom">
-                @else
-                    <x-feathericon-user class="h-36 w-36 text-gray-700 dark:text-white" />
-                @endif
-            </div>
+            <x-feathericon-pen-tool class="h-24 w-24 text-gray-700 dark:text-white" />
         @endslot
 
         @slot('form')
-            <div class="col-span-1 md:col-span-6">
-                <h1 class="text-gray-800 dark:text-white text-2xl text-left">
-                    {{ $patient->name }} {{ $patient->last_name }}
-                </h1>
-            </div>
+            <div class="col-span-1 md:col-span-12">
+                <x-label>
+                    {{ __('Name') }}
+                </x-label>
 
-            <div class="col-span-1 md:col-span-6">
-                <h1 class="text-gray-800 dark:text-white text-2xl text-left">
-                    {{ $patient->identity_card }} {{ $patient->issued }}
-                </h1>
+                <x-input type="text" wire:model='name' />
+
+                <x-input-error for="name" />
             </div>
 
             <div class="col-span-1 md:col-span-12">
                 <x-label>
-                    {{ __('Number') }}
+                    {{ __('Description') }}
                 </x-label>
 
-                <x-input type="text" wire:model='number' />
+                <x-input type="text" wire:model='description' />
 
-                <x-input-error for="number" />
+                <x-input-error for="description" />
+            </div>
+
+            <div class="col-span-1 md:col-span-12">
+                <x-label>
+                    {{ __('Price') }}
+                </x-label>
+
+                <x-input type="number" step="0.01" wire:model='price' />
+
+                <x-input-error for="price" />
             </div>
         @endslot
 
@@ -86,7 +87,15 @@
                 @slot('head')
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            {{ __('Number') }}
+                            {{ __('Name') }}
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            {{ __('Description') }}
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            {{ __('Price') }}
                         </th>
 
                         <th scope="col" class="px-6 py-3">
@@ -96,24 +105,32 @@
                 @endslot
 
                 @slot('body')
-                    @foreach ($phones as $phone)
+                    @foreach ($treatments as $treatment)
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $phone->number }}
-                            </td>
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $treatment->name }}
+                            </th>
+
+                            <th class="px-6 py-4">
+                                {{ $treatment->description }}
+                            </th>
+
+                            <th class="px-6 py-4">
+                                {{ $treatment->price }}
+                            </th>
 
                             <td class="px-6 py-4 whitespace-nowrap text-left">
                                 <ul>
                                     <li>
-                                        <a wire:click='edit({{ $phone->id }})'
+                                        <a wire:click='edit({{ $treatment->id }})'
                                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
                                             {{ __('Edit') }}
                                         </a>
                                     </li>
 
                                     <li>
-                                        <a wire:click='modalDelete({{ $phone->id }})'
+                                        <a wire:click='modalDelete({{ $treatment->id }})'
                                             class="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer">
                                             {{ __('Delete') }}
                                         </a>
@@ -127,7 +144,7 @@
         @endslot
 
         @slot('paginate')
-            {{ $phones->links('vendor.livewire.custom') }}
+            {{ $treatments->links('vendor.livewire.custom') }}
         @endslot
     </x-list>
 

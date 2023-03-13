@@ -17,6 +17,16 @@ class Patient extends Model
     const Male = 1;
     const Female = 2;
 
+    protected $fillable = [
+        'name',
+        'last_name',
+        'identity_card',
+        'issued',
+        'birthdate',
+        'sex',
+        'photo_path'
+    ];
+
     public function phones(): MorphMany
     {
         return $this->morphMany(Phone::class, 'phoneable');
@@ -35,5 +45,10 @@ class Patient extends Model
     public function record(): HasOne
     {
         return $this->hasOne(Record::class);
+    }
+
+    public function diagnostics(): HasMany
+    {
+        return $this->hasMany(Diagnostic::class);
     }
 }

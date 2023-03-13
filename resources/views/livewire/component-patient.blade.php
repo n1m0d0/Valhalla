@@ -18,9 +18,12 @@
                     <x-label>
                         {{ __('Previous image') }}
                     </x-label>
-
-                    <img src="{{ Storage::url($photo_path_Before) }}" class="rounded-2xl h-36 w-36 object-cover"
-                        data-action="zoom">
+                    @if ($photo_path_Before != null)
+                        <img src="{{ Storage::url($photo_path_Before) }}" class="rounded-2xl h-36 w-36 object-cover"
+                            data-action="zoom">
+                    @else
+                        <x-feathericon-user class="h-36 w-36 text-gray-700 dark:text-white" />
+                    @endif
                 </div>
 
                 <div class="text-center">
@@ -217,8 +220,12 @@
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td class="px-6 py-4">
-                                <img src="{{ Storage::url($patient->photo_path) }}"
-                                    class="rounded-full h-16 w-16 object-cover" data-action="zoom">
+                                @if ($patient->photo_path != null)
+                                    <img src="{{ Storage::url($patient->photo_path) }}"
+                                        class="rounded-full h-16 w-16 object-cover" data-action="zoom">
+                                @else
+                                    <x-feathericon-user class="h-16 w-16 text-gray-700 dark:text-white" />
+                                @endif
                             </td>
 
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">

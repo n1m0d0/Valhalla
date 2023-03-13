@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('last_name');
-            $table->string('identity_card');
+            $table->string('identity_card')->unique();
             $table->enum('issued', [
                 'CH',
                 'LP',

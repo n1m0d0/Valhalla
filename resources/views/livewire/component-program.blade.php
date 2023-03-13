@@ -40,11 +40,11 @@
                         </th>
 
                         <th scope="col" class="px-6 py-3">
-                            {{ __('Sex') }}
+                            {{ __('Identity Card') }}
                         </th>
 
                         <th scope="col" class="px-6 py-3">
-                            {{ __('Identity Card') }}
+                            {{ __('Title') }}
                         </th>
 
                         <th scope="col" class="px-6 py-3">
@@ -66,8 +66,12 @@
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td class="px-6 py-4">
-                                <img src="{{ Storage::url($meeting->patient->photo_path) }}"
-                                    class="rounded-full h-16 w-16 object-cover" data-action="zoom">
+                                @if ($meeting->patient->photo_path != null)
+                                    <img src="{{ Storage::url($meeting->patient->photo_path) }}"
+                                        class="rounded-full h-16 w-16 object-cover" data-action="zoom">
+                                @else
+                                    <x-feathericon-user class="h-16 w-16 text-gray-700 dark:text-white" />
+                                @endif
                             </td>
 
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -75,17 +79,11 @@
                             </th>
 
                             <td class="px-6 py-4">
-                                @if ($meeting->patient->sex == 1)
-                                    {{ __('Male') }}
-                                @endif
-
-                                @if ($meeting->patient->sex == 2)
-                                    {{ __('Female') }}
-                                @endif
+                                {{ $meeting->patient->identity_card }} {{ $meeting->patient->issued }}
                             </td>
 
                             <td class="px-6 py-4">
-                                {{ $meeting->patient->identity_card }} {{ $meeting->patient->issued }}
+                                {{ $meeting->title }}
                             </td>
 
                             <td class="px-6 py-4">
@@ -130,7 +128,7 @@
             <div class="flex col-span-6 sm:col-span-4 items-center gap-2">
                 <x-feathericon-list class="h-20 w-20 text-blue-500 mr-2" />
 
-                <div class="w-full">    
+                <div class="w-full">
                     <x-select wire:model='attended'>
                         @slot('content')
                             <option value="null">{{ __('Select an option') }}</option>
@@ -138,7 +136,7 @@
                             <option value="0">{{ __('No') }}</option>
                         @endslot
                     </x-select>
-    
+
                     <x-input-error for="attended" />
                 </div>
             </div>

@@ -1,58 +1,4 @@
 <div class="p-2">
-    <x-form-patient>
-        @slot('photo')
-            <div class="text-center">
-                @if ($patient->photo_path != null)
-                    <img src="{{ Storage::url($patient->photo_path) }}" class="rounded-full h-36 w-36 object-cover"
-                        data-action="zoom">
-                @else
-                    <x-feathericon-user class="h-36 w-36 text-gray-700 dark:text-white" />
-                @endif
-            </div>
-        @endslot
-
-        @slot('form')
-            <div class="col-span-1 md:col-span-6">
-                <h1 class="text-gray-800 dark:text-white text-2xl text-left">
-                    {{ $patient->name }} {{ $patient->last_name }}
-                </h1>
-            </div>
-
-            <div class="col-span-1 md:col-span-6">
-                <h1 class="text-gray-800 dark:text-white text-2xl text-left">
-                    {{ $patient->identity_card }} {{ $patient->issued }}
-                </h1>
-            </div>
-
-            <div class="col-span-1 md:col-span-12">
-                <x-label>
-                    {{ __('Number') }}
-                </x-label>
-
-                <x-input type="text" wire:model='number' />
-
-                <x-input-error for="number" />
-            </div>
-        @endslot
-
-        @slot('buttons')
-            @if ($activity == 'create')
-                <x-btn-blue wire:click='store' wire:loading.attr="disabled" wire:target="store" class="w-full md:w-1/4">
-                    {{ __('Save') }}
-                </x-btn-blue>
-            @endif
-
-            @if ($activity == 'edit')
-                <x-btn-green wire:click='update' wire:loading.attr="disabled" wire:target="store" class="w-full md:w-1/4">
-                    {{ __('Update') }}
-                </x-btn-green>
-            @endif
-            <x-btn-red wire:click='clear' wire:loading.attr="disabled" wire:target="store" class="w-full md:w-1/4">
-                {{ __('Cancel') }}
-            </x-btn-red>
-        @endslot
-    </x-form-patient>
-
     <x-list>
         @slot('search')
             <div class="col-span-1 md:col-span-12">
@@ -86,7 +32,23 @@
                 @slot('head')
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            {{ __('Number') }}
+                            {{ __('Photo') }}
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            {{ __('Name') }}
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            {{ __('Title') }}
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            {{ __('Start') }}
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            {{ __('End') }}
                         </th>
 
                         <th scope="col" class="px-6 py-3">
@@ -96,26 +58,40 @@
                 @endslot
 
                 @slot('body')
-                    @foreach ($phones as $phone)
+                    @foreach ($meetings as $meeting)
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $phone->number }}
+                            <td class="px-6 py-4">
+                                @if ($meeting->patient->photo_path != null)
+                                    <img src="{{ Storage::url($meeting->patient->photo_path) }}"
+                                        class="rounded-full h-16 w-16 object-cover" data-action="zoom">
+                                @else
+                                    <x-feathericon-user class="h-16 w-16 text-gray-700 dark:text-white" />
+                                @endif
+                            </td>
+
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $meeting->patient->name }} {{ $meeting->patient->last_name }}
+                            </th>
+
+                            <td class="px-6 py-4">
+                                {{ $meeting->title }}
+                            </td>
+
+                            <td class="px-6 py-4">
+                                {{ $meeting->start }}
+                            </td>
+
+                            <td class="px-6 py-4">
+                                {{ $meeting->end }}
                             </td>
 
                             <td class="px-6 py-4 whitespace-nowrap text-left">
                                 <ul>
                                     <li>
-                                        <a wire:click='edit({{ $phone->id }})'
+                                        <a wire:click='modalDiagnostic({{ $meeting->id }})'
                                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
-                                            {{ __('Edit') }}
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <a wire:click='modalDelete({{ $phone->id }})'
-                                            class="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer">
-                                            {{ __('Delete') }}
+                                            {{ __('Diagnostic') }}
                                         </a>
                                     </li>
                                 </ul>
@@ -127,35 +103,31 @@
         @endslot
 
         @slot('paginate')
-            {{ $phones->links('vendor.livewire.custom') }}
+            {{ $meetings->links('vendor.livewire.custom') }}
         @endslot
     </x-list>
 
-    <x-dialog-modal wire:model="deleteModal">
+    <x-dialog-modal wire:model="diagnosticModal">
         <x-slot name="title">
             <div class="flex col-span-6 sm:col-span-4 items-center">
-                <x-feathericon-alert-triangle class="h-10 w-10 text-red-500 mr-2" />
+                <x-feathericon-alert-triangle class="h-10 w-10 text-blue-500 mr-2" />
 
-                {{ __('Delete') }}
+                {{ __('Diagnostic') }}
             </div>
         </x-slot>
 
         <x-slot name="content">
             <div class="flex col-span-6 sm:col-span-4 items-center gap-2">
-                <x-feathericon-trash class="h-20 w-20 text-red-500 mr-2" />
-
-                <p>
-                    {{ __('Once deleted, the record cannot be recovered.') }}
-                </p>
+                
             </div>
         </x-slot>
 
         <x-slot name="footer">
-            <x-btn-red wire:click="$set('deleteModal', false)" wire:loading.attr="disabled" class="w-1/3">
+            <x-btn-red wire:click="$set('diagnosticModal', false)" wire:loading.attr="disabled" class="w-1/3">
                 {{ __('Cancel') }}
             </x-btn-red>
 
-            <x-btn-blue class="ml-2" wire:click='delete' wire:loading.attr="disabled" class="w-1/3">
+            <x-btn-blue class="ml-2" wire:click='diagnostic' wire:loading.attr="disabled" class="w-1/3">
                 {{ __('Accept') }}
             </x-btn-blue>
         </x-slot>

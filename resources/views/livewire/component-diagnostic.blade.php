@@ -26,12 +26,32 @@
 
             <div class="col-span-1 md:col-span-12">
                 <x-label>
-                    {{ __('Number') }}
+                    {{ __('Tooth') }}
                 </x-label>
 
-                <x-input type="text" wire:model='number' />
+                <x-select wire:model='tooth_id'>
+                    @slot('content')
+                        <option value="null">{{ __('Select an option') }}</option>
 
-                <x-input-error for="number" />
+                        @foreach ($teeth as $tooth)
+                            <option value="{{ $tooth->id }}">
+                                {{ __('Quadrant') }} {{ $tooth->quadrant }}: {{ __('Tooth') }} -> {{ $tooth->number }}
+                            </option>
+                        @endforeach
+                    @endslot
+                </x-select>
+
+                <x-input-error for="tooth_id" />
+            </div>
+
+            <div class="col-span-1 md:col-span-12">
+                <x-label>
+                    {{ __('Description') }}
+                </x-label>
+
+                <x-input-textarea wire:model='description' />
+
+                <x-input-error for="description" />
             </div>
         @endslot
 
@@ -86,7 +106,15 @@
                 @slot('head')
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            {{ __('Number') }}
+                            {{ __('Tooth') }}
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            {{ __('Description') }}
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            {{ __('Registered') }}
                         </th>
 
                         <th scope="col" class="px-6 py-3">
@@ -96,24 +124,32 @@
                 @endslot
 
                 @slot('body')
-                    @foreach ($phones as $phone)
+                    @foreach ($diagnostics as $diagnostic)
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $phone->number }}
+                                {{ $diagnostic->tooth->number }}
+                            </td>
+
+                            <td class="px-6 py-4">
+                                {{ $diagnostic->description }}
+                            </td>
+
+                            <td class="px-6 py-4">
+                                {{ $diagnostic->created_at }}
                             </td>
 
                             <td class="px-6 py-4 whitespace-nowrap text-left">
                                 <ul>
                                     <li>
-                                        <a wire:click='edit({{ $phone->id }})'
+                                        <a wire:click='edit({{ $diagnostic->id }})'
                                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
                                             {{ __('Edit') }}
                                         </a>
                                     </li>
 
                                     <li>
-                                        <a wire:click='modalDelete({{ $phone->id }})'
+                                        <a wire:click='modalDelete({{ $diagnostic->id }})'
                                             class="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer">
                                             {{ __('Delete') }}
                                         </a>
@@ -127,7 +163,7 @@
         @endslot
 
         @slot('paginate')
-            {{ $phones->links('vendor.livewire.custom') }}
+            {{ $diagnostics->links('vendor.livewire.custom') }}
         @endslot
     </x-list>
 

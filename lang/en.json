@@ -219,5 +219,17 @@
     "Question": "Question",
     "Description": "Description",
     "History": "History",
-    "Medical": "Medical"
+    "Medical": "Medical",
+    "Calendar": "Calendar",
+    "Consultation": "Consultation",
+    "Finish": "Finish",
+    "Treatment": "Treatment",
+    "User": "User",
+    "Secretary": "Secretary",
+    "Doctor": "Doctor",
+    "Update": "Update",
+    "Diagnostic": "Diagnostic",
+    "Tooth": "Tooth",
+    "Quadrant": "Quadrant",
+    "Registered": "Registered"
 }

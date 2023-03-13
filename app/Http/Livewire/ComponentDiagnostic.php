@@ -2,13 +2,15 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Meeting;
+use App\Models\Diagnostic;
 use App\Models\Patient;
+use App\Models\Tooth;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Usernotnull\Toast\Concerns\WireToast;
 
-class ComponentMeeting extends Component
+class ComponentDiagnostic extends Component
 {
     use WithPagination;
     use WireToast;
@@ -18,11 +20,11 @@ class ComponentMeeting extends Component
 
     public $patient;
 
-    public $title;
-    public $start;
-    public $end;
+    public $tooth_id;
+    public $description;
+    public $diagnostic_id;
 
-    public $meeting_id;
+    public $teeth;
 
     public $deleteModal;
 
@@ -32,9 +34,8 @@ class ComponentMeeting extends Component
     ];
 
     protected $rules = [
-        'title' => 'required|max:200',
-        'start' => 'required|date',
-        'end' => 'nullable|date',
+        'tooth_id' => 'required',
+        'description' => 'required|max:1000',
     ];
 
     public function mount(Patient $patient)
@@ -42,30 +43,32 @@ class ComponentMeeting extends Component
         $this->patient = $patient;
         $this->activity = 'create';
         $this->search = "";
+        $this->teeth = Tooth::all();
         $this->deleteModal = false;
     }
 
     public function render()
     {
-        $queryMeeting = Meeting::query();
+        $queryDiagnostic = Diagnostic::query();
         if ($this->search != null) {
             $this->updatingSearch();
-            $queryMeeting = $queryMeeting->where('title', 'like', '%' . $this->search . '%');
+            $queryDiagnostic = $queryDiagnostic->whereHas('tooth', function (Builder $query) {
+                $query->where('number', 'like', '%' . $this->search . '%');
+            });
         }
-        $meetings = $queryMeeting->where('patient_id', $this->patient->id)->whereNull('attended')->orderBy('id', 'DESC')->paginate(2);
-        return view('livewire.component-meeting', compact('meetings'));
+        $diagnostics = $queryDiagnostic->where('patient_id', $this->patient->id)->orderBy('id', 'DESC')->paginate(2);
+        return view('livewire.component-diagnostic', compact('diagnostics'));
     }
 
     public function store()
     {
         $this->validate();
 
-        $meeting = new meeting();
-        $meeting->patient_id = $this->patient->id;
-        $meeting->title = $this->title;
-        $meeting->start = $this->start;
-        $meeting->end = $this->end;
-        $meeting->save();
+        $diagnostic = new Diagnostic();
+        $diagnostic->patient_id = $this->patient->id;
+        $diagnostic->tooth_id = $this->tooth_id;
+        $diagnostic->description = $this->description;
+        $diagnostic->save();
 
         $this->clear();
 
@@ -78,27 +81,25 @@ class ComponentMeeting extends Component
     {
         $this->clear();
 
-        $this->meeting_id = $id;
+        $this->diagnostic_id = $id;
 
-        $meeting = Meeting::find($id);
+        $diagnostic = Diagnostic::find($id);
 
-        $this->title = $meeting->title;
-        $this->start = $meeting->start;
-        $this->end = $meeting->end;
+        $this->tooth_id = $diagnostic->tooth_id;
+        $this->description = $diagnostic->description;
 
         $this->activity = "edit";
     }
 
     public function update()
     {
-        $meeting = Meeting::find($this->meeting_id);
+        $diagnostic = Diagnostic::find($this->diagnostic_id);
 
         $this->validate();
 
-        $meeting->title = $this->title;
-        $meeting->start = $this->start;
-        $meeting->end = $this->end;
-        $meeting->save();
+        $diagnostic->tooth_id = $this->tooth_id;
+        $diagnostic->description = $this->description;
+        $diagnostic->save();
 
         $this->activity = "create";
         $this->clear();
@@ -110,14 +111,14 @@ class ComponentMeeting extends Component
 
     public function modalDelete($id)
     {
-        $this->meeting_id = $id;
+        $this->diagnostic_id = $id;
         $this->deleteModal = true;
     }
 
     public function delete()
     {
-        $meeting = Meeting::find($this->meeting_id);
-        $meeting->delete();
+        $diagnostic = Diagnostic::find($this->diagnostic_id);
+        $diagnostic->delete();
 
         $this->clear();
         $this->deleteModal = false;
@@ -129,7 +130,7 @@ class ComponentMeeting extends Component
 
     public function clear()
     {
-        $this->reset(['title', 'start', 'end', 'meeting_id']);
+        $this->reset(['tooth_id', 'description', 'diagnostic_id']);
         $this->activity = "create";
     }
 

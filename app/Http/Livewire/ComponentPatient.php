@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Patient;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -40,11 +41,11 @@ class ComponentPatient extends Component
     protected $rules = [
         'name' => 'required|max:200',
         'last_name' => 'required|max:200',
-        'identity_card' => 'required|max:200',
+        'identity_card' => 'required|unique:patients|max:200',
         'issued' => 'required',
-        'birthdate' => 'required',
+        'birthdate' => 'required|date_format:Y-m-d',
         'sex' => 'required',
-        'photo_path' => 'required|mimes:jpg,bmp,png,pdf|max:5120'
+        'photo_path' => 'nullable|image|max:2048'
     ];
 
     public function mount()
@@ -111,9 +112,19 @@ class ComponentPatient extends Component
         $patient = Patient::find($this->patient_id);
 
         if ($this->photo_path != null) {
-            $this->validate();
+            $this->validate([
+                'name' => 'required|max:200',
+                'last_name' => 'required|max:200',
+                'identity_card' => ['required', 'max:200', Rule::unique('patients')->ignore($this->patient_id)],
+                'issued' => 'required',
+                'birthdate' => 'required|date_format:Y-m-d',
+                'sex' => 'required',
+                'photo_path' => 'nullable|image|max:2048'
+            ]);
 
-            Storage::delete($patient->photo_path);
+            if ($patient->photo_path != null) {
+                Storage::delete($patient->photo_path);
+            }
 
             $patient->name = $this->name;
             $patient->last_name = $this->last_name;
@@ -129,7 +140,7 @@ class ComponentPatient extends Component
                 'last_name' => 'required|max:200',
                 'identity_card' => 'required|max:200',
                 'issued' => 'required',
-                'birthdate' => 'required',
+                'birthdate' => 'required|date_format:Y-m-d',
                 'sex' => 'required',
             ]);
 
@@ -168,7 +179,7 @@ class ComponentPatient extends Component
             ->success('Se elimino correctamente')
             ->push();
     }
-    
+
     public function clear()
     {
         $this->reset(['name', 'last_name', 'identity_card', 'issued', 'birthdate', 'sex', 'photo_path', 'patient_id']);
