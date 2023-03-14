@@ -8,11 +8,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Patient extends Model
+class Patient extends Model implements Auditable
 {
     use HasFactory;
     use SoftDeletes;
+
+    use \OwenIt\Auditing\Auditable;
 
     const Male = 1;
     const Female = 2;
