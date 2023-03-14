@@ -231,5 +231,9 @@
     "Diagnostic": "Diagnostic",
     "Tooth": "Tooth",
     "Quadrant": "Quadrant",
-    "Registered": "Registered"
+    "Registered": "Registered",
+    "Record": "Record",
+    "Registered users.": "Registered users.",
+    "Registered patients.": "Registered patients.",
+    "Registered meetings.": "Registered meetings."
 }

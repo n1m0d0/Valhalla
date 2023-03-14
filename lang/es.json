@@ -231,5 +231,9 @@
     "Diagnostic": "Diagnóstico",
     "Tooth": "Diente",
     "Quadrant": "Cuadrante",
-    "Registered": "Registrado"
+    "Registered": "Registrado",
+    "Record": "Registro",
+    "Registered users.": "Usuarios registrados.",
+    "Registered patients.": "Pacientes registrados.",
+    "Registered meetings.": "Reuniones registradas."
 }
